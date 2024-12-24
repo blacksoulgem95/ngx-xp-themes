@@ -11,6 +11,11 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "paths": {
+      "ngx-xp-icons": [
+        "./dist/ngx-xp-icons"
+      ]
+    },
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
