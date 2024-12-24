@@ -1,4 +1,4 @@
-type XPIcon = "7z-file" |
+export type XPIcon = "7z-file" |
   "access" |
   "account-wizard" |
   "app-wizard" |

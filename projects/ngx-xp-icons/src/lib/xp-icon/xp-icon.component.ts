@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
+import {XPIcon} from "./xp-icon.type"
 
 @Component({
   selector: 'ngx-xp-icon',
