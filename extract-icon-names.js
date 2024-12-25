@@ -21,14 +21,18 @@ function listFilesWithoutExtension(folderPath) {
   }
 }
 
-const types = [
-  'xp', '2k'
-]
+const iconPacks = {
+  'xp': {type: 'xp', upperType: 'Xp'},
+  'xpsp2': {type: 'xpsp2', upperType: 'XpSP2'},
+  'longhorn': {type: 'longhorn', upperType: 'Longhorn'},
+  'whistler': {type: 'whistler', upperType: 'Whistler'},
+  'applications': {type: 'applications', upperType: 'Applications'},
+}
 
 const extract = (type) => {
 
-  if (!type || types.indexOf(type) < 0) {
-    console.error("Not a valid type. valid types:", types)
+  if (!type || Object.keys(iconPacks).indexOf(type) < 0) {
+    console.error("Not a valid type. valid types:", Object.keys(iconPacks))
     throw new Error("Not a valid type.")
   }
 
@@ -37,4 +41,6 @@ const extract = (type) => {
   return listFilesWithoutExtension(folderPath);
 }
 
-module.exports = extract
+module.exports = {
+  iconPacks, extract
+}
