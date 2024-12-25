@@ -9,12 +9,16 @@ const path = require('path');
 function listFilesWithoutExtension(folderPath) {
   try {
     // Read the directory contents
-    const files = fs.readdirSync(folderPath);
+    let files = fs.readdirSync(folderPath)
 
     // Filter out directories and remove file extensions
-    return files
+    files = files
       .filter(file => fs.statSync(path.join(folderPath, file)).isFile())
       .map(file => path.parse(file).name);
+
+    return files.filter(function (elem, pos) {
+      return files.indexOf(elem) === pos;
+    });
   } catch (error) {
     console.error(`Error reading directory: ${error.message}`);
     return [];

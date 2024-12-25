@@ -3,7 +3,11 @@ const {readFileSync, existsSync, mkdirSync, writeFileSync} = require("fs");
 const extractor = require('./extract-icon-names')
 const path = require("path");
 const upperCamelCase = require('uppercamelcase');
-
+const ImageTracer = require('imagetracerjs')
+const PNGReader = require('png.js')
+const cheerio = require('cheerio')
+const {from, last, of, map, forkJoin, mergeAll, mergeMap} = require("rxjs");
+const printProgress = require('./progress')
 const names = extractor.extract
 const iconPacks = extractor.iconPacks
 
@@ -31,18 +35,6 @@ const xpIconComponentHtml_Template = `
 <img style="display: inline-block" [class]="classStyle" [style.width]="width" [style.height]="height" src="{{imageBase64}}" alt="{{type}}-{{icon}}" />
 `
 
-
-function getProgressBar(completed, total) {
-  const percent = ((completed / total) * 100).toFixed(2);
-  const barLength = 20; // Lunghezza della barra di progresso
-  const completedLength = Math.round((completed / total) * barLength);
-  const bar = '█'.repeat(completedLength) + '-'.repeat(barLength - completedLength);
-  return `[${bar}] ${percent}%`
-}
-
-function printProgress(completed, total) {
-  process.stdout.write(`\r${getProgressBar(completed, total)}`);
-}
 
 const xpIconComponentCss_Template = ``
 
@@ -74,37 +66,116 @@ function processIconSet(iconSetType) {
     writeFileSync(path.join(componentPath, `${componentBaseName}.component.css`), css, {encoding: 'utf8', flag: 'w'})
     componentsToAdd.push(componentAddLine({basePath: componentBaseName, name: componentBaseName}))
 
-    printProgress(idx + 1, iconSet.length)
+    console.clear()
+
+    let i = idx +1
+
+    console.log("Completed", componentBaseName, `(${i}/${iconSet.length})\n`)
+    printProgress(i, iconSet.length)
+    return componentBaseName
   }
 
-  iconSet.map((name) => {
-    const file = path.join(assetsPath, iconSetType.type, `${name}.png`)
-    const imageBase64 = 'data:image/png;base64,' + readFileSync(file, 'base64');
+  let idx = 0;
 
-    let upperCamelCaseIconName = upperCamelCase(name)
-    let dashedIconName = upperCamelCaseIconName.replace(/[A-Z]/g, m => "-" + m.toLowerCase())
-    if (dashedIconName.startsWith('-')) {
-      dashedIconName = dashedIconName.slice(1, dashedIconName.length)
-    }
+  const processIcon = (icon) => {
+    return of(icon).pipe(map(name => {
+      const file = path.join(assetsPath, iconSetType.type, `${name}.png`)
+      const pngReader = new PNGReader(readFileSync(file))
 
-    const ts = xpIconComponentTS({
-      icon: dashedIconName,
-      type: iconSetType.type,
-      upperType: iconSetType.upperType,
-      name: upperCamelCaseIconName
-    })
+      const png = new Promise((res, rej) => {
+        pngReader.parse((error, png) => {
+          if (error) rej(error)
+          res(png)
+        })
+      })
 
-    const html = xpIconComponentHTML({icon: dashedIconName, type: iconSetType.type, imageBase64})
-    const css = xpIconComponentCSS({icon: dashedIconName})
-    return {
-      ts, html, css, icon: dashedIconName, type: iconSetType.type
-    }
-  }).forEach(writeComponents)
+      return {
+        name,
+        file,
+        png
+      }
+    }))
+      .pipe(map(({name, png: pngPromise, index}) => {
+        return forkJoin([
+          of(name),
+          from(pngPromise)
+        ])
+      }), mergeAll())
+      .pipe(map((object) => {
+        const [name, png] = object
+        const imageData = {width: png.width, height: png.height, data: png.pixels};
+
+        // tracing to SVG string
+        const tracingOptions = {scale: 5}; // options object; option preset string can be used also
+
+
+        let svg = ImageTracer.imagedataToSVG(imageData, tracingOptions)
+
+        return {name, svg}
+      }))
+      .pipe(map(({name, svg}) => {
+        let $ = cheerio.load(svg)
+        let svgS = $('svg')
+        svgS.attr('[ngClass]', 'classStyle')
+        svgS.attr('[style.width]', 'width')
+        svgS.attr('width', null)
+        svgS.attr('[style.height]', 'height')
+        svgS.attr('height', null)
+
+        let html = $.html(svgS)
+        return {
+          name, html
+        }
+      }))
+      .pipe(map(({name, html}) => {
+        let upperCamelCaseIconName = upperCamelCase(name)
+        let dashedIconName = upperCamelCaseIconName.replace(/[A-Z]/g, m => "-" + m.toLowerCase())
+        if (dashedIconName.startsWith('-')) {
+          dashedIconName = dashedIconName.slice(1, dashedIconName.length)
+        }
+
+        const ts = xpIconComponentTS({
+          icon: dashedIconName,
+          type: iconSetType.type,
+          upperType: iconSetType.upperType,
+          name: upperCamelCaseIconName
+        })
+
+        // const html = xpIconComponentHTML({icon: dashedIconName, type: iconSetType.type, imageBase64})
+        const css = xpIconComponentCSS({icon: dashedIconName})
+
+        return {
+          icon: dashedIconName, html, css, ts
+        }
+      })).pipe(map(({icon, html, css, ts}) => {
+      return writeComponents({
+        type: iconSetType.type,
+        ts, html, css, icon
+      }, idx++)
+    }))
+  }
+
+  const requests = {}
+  for (let k of iconSet) {
+    requests[k] = processIcon(k)
+  }
+
+  return forkJoin(requests).pipe(mergeAll(5))
+
 }
 
-Object.keys(iconPacks).forEach(key => processIconSet(iconPacks[key]))
+async function elaboratePacks() {
+  for (let key of Object.keys(iconPacks))
+    await new Promise((resolve, reject) => {
+      processIconSet(iconPacks[key]).pipe(last()).subscribe({
+        next: resolve,
+        error: reject
+      })
+    })
+}
 
-
-console.log('\nWriting public-api.ts')
-writeFileSync(publicApiFile, componentsToAdd.join('\n'), {encoding: "utf-8", flag: 'w'})
-console.log("Completed!")
+elaboratePacks().then(() => {
+  console.log('\nWriting public-api.ts')
+  writeFileSync(publicApiFile, componentsToAdd.join('\n'), {encoding: "utf-8", flag: 'w'})
+  console.log("Completed!")
+})
