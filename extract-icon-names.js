@@ -12,22 +12,29 @@ function listFilesWithoutExtension(folderPath) {
     const files = fs.readdirSync(folderPath);
 
     // Filter out directories and remove file extensions
-    const fileNamesWithoutExtension = files
+    return files
       .filter(file => fs.statSync(path.join(folderPath, file)).isFile())
       .map(file => path.parse(file).name);
-
-    return fileNamesWithoutExtension;
   } catch (error) {
     console.error(`Error reading directory: ${error.message}`);
     return [];
   }
 }
 
-// Example usage
-const assets = './projects/ngx-xp-icons/src/assets'
-const folderPath = assets + (!!process.env['2K'] ? '/2k' : '/xp'); // Replace with your folder path
-const result = listFilesWithoutExtension(folderPath);
+const types = [
+  'xp', '2k'
+]
 
-result.forEach(f => {
-  process.stdout.write(`${f}\n`)
-})
+const extract = (type) => {
+
+  if (!type || types.indexOf(type) < 0) {
+    console.error("Not a valid type. valid types:", types)
+    throw new Error("Not a valid type.")
+  }
+
+  const assets = './projects/ngx-xp-icons/assets'
+  const folderPath = assets + (`/${type}`); // Replace with your folder path
+  return listFilesWithoutExtension(folderPath);
+}
+
+module.exports = extract

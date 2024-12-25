@@ -7,12 +7,12 @@
       "projectType": "library",
       "root": "projects/ngx-xp-icons",
       "sourceRoot": "projects/ngx-xp-icons/src",
-      "prefix": "lib",
+      "prefix": "xpi",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/ngx-xp-icons/ng-package.json",
+            "project": "projects/ngx-xp-icons/ng-package.json"
           },
           "configurations": {
             "production": {

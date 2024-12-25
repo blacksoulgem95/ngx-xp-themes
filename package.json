@@ -9,8 +9,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "extract-icon-xp": "node extract-icon-names.js",
-    "extract-icon-2k": "2K=true node extract-icon-names.js"
+    "extract-icons": "node generate-icon.js"
   },
   "private": true,
   "dependencies": {
@@ -22,8 +21,10 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "handlebars": "^4.7.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "uppercamelcase": "^3.0.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
