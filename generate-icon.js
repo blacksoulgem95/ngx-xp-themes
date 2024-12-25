@@ -57,6 +57,7 @@ const publicApiFile = './projects/ngx-xp-icons/src/public-api.ts'
 const componentsToAdd = []
 
 function processIconSet(iconSetType) {
+  console.log('\n\n')
   console.log('processing icons for', iconSetType.upperType)
 
   const iconSet = names(iconSetType.type)
