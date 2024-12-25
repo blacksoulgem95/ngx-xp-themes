@@ -9,7 +9,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "extract-icons": "node generate-icon.js"
+    "generate-icons": "node generate-icon.js"
   },
   "private": true,
   "dependencies": {
