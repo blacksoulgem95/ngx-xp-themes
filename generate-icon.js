@@ -72,7 +72,7 @@ const writeComponents = ({type, ts, html, css, icon}, idx) => {
 console.log('processing XP icons')
 xp.map((name) => {
   const file = path.join(assetsPath, 'xp', `${name}.png`)
-  const imageBase64 = 'data:image/png;base64,' + readFileSync(file, 'base64url');
+  const imageBase64 = 'data:image/png;base64,' + readFileSync(file, 'base64');
   const ts = xpIconComponentTS({icon: name, type: 'xp', upperType: 'Xp', name: upperCamelCase(name)})
   const html = xpIconComponentHTML({icon: name, type: 'xp', imageBase64})
   const css = xpIconComponentCSS({icon: name})
