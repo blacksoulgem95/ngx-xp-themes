@@ -2,7 +2,11 @@
   "name": "ngx-xp-icons",
   "version": "0.1.0",
   "author": "Sofia Vicedomini",
-  "repository": "https://github.com/blacksoulgem95/ngx-xp-themes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blacksoulgem95/ngx-xp-themes",
+    "directory": "projects/ngx-xp-icons"
+  },
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0"

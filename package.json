@@ -2,7 +2,10 @@
   "name": "xp-themes",
   "version": "0.0.0",
   "author": "Sofia Vicedomini",
-  "repository": "https://github.com/blacksoulgem95/ngx-xp-themes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blacksoulgem95/ngx-xp-themes"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
