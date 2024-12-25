@@ -30,7 +30,10 @@ jobs:
 
 
       - run: npm ci
-      - run: npm run convert-svg
+
+      # https://gitlab:com/inkscape/inkscape/-/issues/4716:
+      - run: SELF_CALL=BLAHAJ npm run convert-svg
+
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: SVG Generation with InkScape

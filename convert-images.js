@@ -31,6 +31,13 @@ from(items).pipe(
   map(item => {
     return new Promise((resolve, reject) => {
       printProgress(i++, items.length * 2)
+
+      if (fs.existsSync(item.svg)) {
+        // skipping already generated svgs
+        printProgress(i++, items.length * 2)
+        resolve(item.svg)
+      }
+
       exec(`inkscape -p "${item.png}" -o "${item.svg}"`, (error, stdout, stderr) => {
         process.stderr.write(stderr)
         process.stdout.write(stdout)
@@ -48,7 +55,7 @@ from(items).pipe(
   }),
 
   // split in chunks of 5
-  bufferCount(5),
+  bufferCount(2),
 
   // execute concurrently
   concatMap(res => forkJoin(res))
