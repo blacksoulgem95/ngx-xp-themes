@@ -25,7 +25,7 @@ export class {{upperType}}Icon{{name}}Component {
 }
 `
 const xpIconComponentHtml_Template = `
-<img [class]="classStyle" [style.width]="width" [style.height]="height" src="{{imageBase64}}" alt="{{type}}-{{icon}}" />
+<img style="display: inline-block" [class]="classStyle" [style.width]="width" [style.height]="height" src="{{imageBase64}}" alt="{{type}}-{{icon}}" />
 `
 
 function getProgressBar(completed, total) {
