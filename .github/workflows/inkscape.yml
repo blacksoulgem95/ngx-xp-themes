@@ -37,11 +37,10 @@ jobs:
           sudo apt update
           sudo apt install -y inkscape python3-lxml python3-pytest python3-pil python3-pytest-cov
 
-
       - run: npm ci
 
       # https://gitlab:com/inkscape/inkscape/-/issues/4716:
-      - run: SELF_CALL=BLAHAJ npm run ${{  }}
+      - run: SELF_CALL=BLAHAJ npm run ${{ github.event.inputs.redraw }}
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
