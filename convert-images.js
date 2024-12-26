@@ -54,7 +54,7 @@ from(items).pipe(
     })
   }),
 
-  // split in chunks of 5
+  // split in chunks of 2
   bufferCount(2),
 
   // execute concurrently

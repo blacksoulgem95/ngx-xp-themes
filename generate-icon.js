@@ -6,7 +6,7 @@ const upperCamelCase = require('uppercamelcase');
 const ImageTracer = require('imagetracerjs')
 const PNGReader = require('png.js')
 const cheerio = require('cheerio')
-const {from, last, of, map, forkJoin, mergeAll, mergeMap} = require("rxjs");
+const {from, last, of, map, forkJoin, mergeAll, mergeMap, bufferCount, concatMap} = require("rxjs");
 const printProgress = require('./progress')
 const names = extractor.extract
 const iconPacks = extractor.iconPacks
@@ -77,43 +77,15 @@ function processIconSet(iconSetType) {
 
   let idx = 0;
 
-  const processIcon = (icon) => {
-    return of(icon).pipe(map(name => {
-      const file = path.join(assetsPath, iconSetType.type, `${name}.png`)
-      const pngReader = new PNGReader(readFileSync(file))
 
-      const png = new Promise((res, rej) => {
-        pngReader.parse((error, png) => {
-          if (error) rej(error)
-          res(png)
-        })
-      })
+    return from(iconSet).pipe(map(name => {
+      const file = path.join(assetsPath, iconSetType.type, `${name}.svg`)
 
       return {
         name,
-        file,
-        png
+        svg: readFileSync(file)
       }
-    }))
-      .pipe(map(({name, png: pngPromise, index}) => {
-        return forkJoin([
-          of(name),
-          from(pngPromise)
-        ])
-      }), mergeAll())
-      .pipe(map((object) => {
-        const [name, png] = object
-        const imageData = {width: png.width, height: png.height, data: png.pixels};
-
-        // tracing to SVG string
-        const tracingOptions = {scale: 5}; // options object; option preset string can be used also
-
-
-        let svg = ImageTracer.imagedataToSVG(imageData, tracingOptions)
-
-        return {name, svg}
-      }))
-      .pipe(map(({name, svg}) => {
+    }), map(({name, svg}) => {
         let $ = cheerio.load(svg)
         let svgS = $('svg')
         svgS.attr('[ngClass]', 'classStyle')
@@ -126,8 +98,7 @@ function processIconSet(iconSetType) {
         return {
           name, html
         }
-      }))
-      .pipe(map(({name, html}) => {
+      }), map(({name, html}) => {
         let upperCamelCaseIconName = upperCamelCase(name)
         let dashedIconName = upperCamelCaseIconName.replace(/[A-Z]/g, m => "-" + m.toLowerCase())
         if (dashedIconName.startsWith('-')) {
@@ -147,20 +118,19 @@ function processIconSet(iconSetType) {
         return {
           icon: dashedIconName, html, css, ts
         }
-      })).pipe(map(({icon, html, css, ts}) => {
+      }), map(({icon, html, css, ts}) => {
       return writeComponents({
         type: iconSetType.type,
         ts, html, css, icon
       }, idx++)
-    }))
-  }
+    }),
 
-  const requests = {}
-  for (let k of iconSet) {
-    requests[k] = processIcon(k)
-  }
+      // split in chunks of 5
+      bufferCount(5),
 
-  return forkJoin(requests).pipe(mergeAll(5))
+      // execute concurrently
+      concatMap(res => forkJoin(res))
+      )
 
 }
 
