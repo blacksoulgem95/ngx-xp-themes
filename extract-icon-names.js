@@ -36,7 +36,7 @@ const iconPacks = {
 const extract = (type) => {
 
   if (!type || Object.keys(iconPacks).indexOf(type) < 0) {
-    console.error("Not a valid type. valid types:", Object.keys(iconPacks))
+    console.error(type, "is not a valid type. valid types:", Object.keys(iconPacks))
     throw new Error("Not a valid type.")
   }
 

@@ -10,6 +10,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-win": "node --max-old-space-size=8196 node_modules/@angular/cli/bin/ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "redraw-svg": "npx rimraf projects/ngx-xp-icons/assets/**/*.svg && npm run convert-svg",
