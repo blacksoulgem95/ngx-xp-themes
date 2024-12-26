@@ -1,0 +1,55 @@
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version Tag to utilize'
+        required: true
+
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Build artifact
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --if-present
+        env:
+          NODE_OPTIONS: "--max_old_space_size=8192"
+
+      - run: sed -i '/^dist$/d' .gitignore
+      - run: git checkout -b release-${{ github.event.inputs.version }}
+      - run: git add . && git commit -m "Release ${{ github.event.inputs.version }}"
+      - run: git push --set-upstream origin release-${{ github.event.inputs.version }}
+
+      - name: Bump version and push tag
+        id: ${{ github.event.inputs.version }}
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automated creation
+          draft: false
+          prerelease: false
