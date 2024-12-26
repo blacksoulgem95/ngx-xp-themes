@@ -34,7 +34,7 @@ export class IconComponent {
    */
   @Input() size = '100%';
 
-  @Input() ngClass
+  @Input() ngClass: any
 
   /**
    * The name of the icon pack
