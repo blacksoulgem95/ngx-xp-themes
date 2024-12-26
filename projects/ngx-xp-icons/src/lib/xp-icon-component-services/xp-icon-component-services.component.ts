@@ -1,5 +1,5 @@
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
 import {NgClass} from '@angular/common';
 
 @Component({
@@ -7,6 +7,9 @@ import {NgClass} from '@angular/common';
   standalone: true,
   imports: [
     NgClass
+  ],
+  schemas: [
+    NO_ERRORS_SCHEMA
   ],
   templateUrl: './xp-icon-component-services.component.html',
   styleUrl: './xp-icon-component-services.component.css'

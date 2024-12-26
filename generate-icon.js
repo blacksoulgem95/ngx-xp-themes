@@ -12,7 +12,7 @@ const names = extractor.extract
 const iconPacks = extractor.iconPacks
 
 const xpIconComponentTS_Template = `
-import {Component, Input} from '@angular/core';
+import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
 import {NgClass} from '@angular/common';
 
 @Component({
@@ -20,6 +20,9 @@ import {NgClass} from '@angular/common';
   standalone: true,
   imports: [
     NgClass
+  ],
+  schemas: [
+    NO_ERRORS_SCHEMA
   ],
   templateUrl: './{{type}}-icon-{{icon}}.component.html',
   styleUrl: './{{type}}-icon-{{icon}}.component.css'
