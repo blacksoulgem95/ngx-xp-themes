@@ -9,6 +9,13 @@ on:
     types:
       - completed
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force a build outside inkscape generation'
+        required: true
+        default: 'false'
+        type: choice
+        options: ['true', 'false']
 
 jobs:
   build:
@@ -19,6 +26,7 @@ jobs:
       contents: write
 
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event.inputs.force == 'true' }}
 
     strategy:
       matrix:
