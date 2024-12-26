@@ -22,26 +22,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
-      - name: Commit & Push
-        uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          message: Release ${{ github.event.inputs.version }}
-          new_branch: release-${{ github.event.inputs.version }}
-          push: true
-          tag: v${{ github.event.inputs.version }}
-          committer_name: GitHub Actions
-          committer_email: actions@github.com
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: Release ${{ github.event.inputs.version }}
           body: |
             Automated creation
           draft: false
