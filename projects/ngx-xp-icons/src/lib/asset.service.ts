@@ -16,7 +16,7 @@ export class AssetService {
   constructor() {
   }
 
-  getSvgAssetUrl(pack: IconPack, name: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications): string {
+  getAssetUrl(pack: IconPack, name: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications): string {
     const iconPack = iconPacks[pack]
     if (!iconPack.validator(name)) {
       throw new Error(`Icon ${name} not of pack ${pack}`)

@@ -1,6 +1,5 @@
-import { NgClass } from '@angular/common';
-import {ChangeDetectionStrategy, Component, Input, OnChanges} from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {NgClass, NgOptimizedImage} from '@angular/common';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 import {AssetService} from './asset.service';
 import {
@@ -11,7 +10,6 @@ import {
   IconPackXp,
   IconPackXpSP2
 } from './asset.library';
-import {HttpClient} from '@angular/common/http';
 
 /**
  * The icon component
@@ -21,14 +19,14 @@ import {HttpClient} from '@angular/common/http';
   selector: 'xpi-icon',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [],
-  imports: [NgClass],
-  template: `<span
-    [innerHTML]="svg"
-    [style.height]="size"
-    [style.width]="size">
-  </span>`
+  imports: [NgClass, NgOptimizedImage],
+  template: `<img
+    [alt]="pack + '_' + name"
+    [ngSrc]="src"
+    [height]="size"
+    [width]="size"/>`
 })
-export class IconComponent implements OnChanges {
+export class IconComponent {
   /**
    * The size of the icon. Accepts valid CSS values
    */
@@ -42,29 +40,11 @@ export class IconComponent implements OnChanges {
    * The name of the icon to render
    */
   @Input() name!: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications;
-  private svgContent?: string;
 
-  protected get svg(): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(this.svgContent || `<svg></svg>`);
+  constructor(private assetService: AssetService) {
   }
 
-  updateSvg() {
-    const svgUrl = this.assetService.getSvgAssetUrl(this.pack, this.name);
-    this.httpClient.get(svgUrl, {
-      responseType: "text"
-    }).subscribe({
-      next: svgContent => this.svgContent = svgContent,
-      error: error => console.error("Cannot load SVG:", error)
-    })
+  get src() {
+    return this.assetService.getAssetUrl(this.pack, this.name)
   }
-
-  ngOnInit() {
-    this.updateSvg()
-  }
-
-  ngOnChanges() {
-    this.updateSvg()
-  }
-
-  constructor(private sanitizer: DomSanitizer, private assetService: AssetService, private httpClient: HttpClient) {}
 }

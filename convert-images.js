@@ -4,6 +4,7 @@ const path = require('path')
 const {exec} = require("child_process")
 const printProgress = require('./progress')
 const {optimize} = require('svgo')
+const cheerio = require('cheerio')
 const {from, map, bufferCount, forkJoin, concatMap} = require('rxjs')
 
 const {DOMParser, XMLSerializer} = require('xmldom')
@@ -76,6 +77,7 @@ from(items).pipe(
         return
       }
 
+      // fixme use imagemagick convert and potrace
       exec(`inkscape -p "${item.png}" -o "${item.svg}"`, (error, stdout, stderr) => {
         process.stderr.write(stderr)
         process.stdout.write(stdout)
@@ -92,26 +94,42 @@ from(items).pipe(
 
           // Ottimizza il contenuto SVG
           const result = optimize(cleanSvg(data), {
-            multipass: true, // Esegui più passaggi di ottimizzazione
-            plugins: [
-              'removeDoctype',
-              'removeComments',
-              'cleanupIds',
-              'cleanupAttrs',
-              'removeMetadata',
-              'convertPathData',
-              'mergePaths',
-              'cleanupListOfValues',
-              'removeUselessStrokeAndFill',
-              'cleanupNumericValues',
-              'convertColors',
-              'removeOffCanvasPaths',
-              'removeUnusedNS',
-              'removeUselessDefs',
-              'reusePaths',
-              'removeXMLNS',
-              { name: 'removeViewBox', active: false }, // Mantieni il viewBox
-            ],
+            "multipass": true,
+            "floatPrecision": 4,
+            "plugins": [
+              {
+                "name": "preset-default"
+              },
+              {
+                "name": "removeAttributesBySelector",
+                "params": {
+                  "selector": "svg",
+                  "attributes": [
+                    "xml:space",
+                    "id",
+                    "baseProfile"
+                  ]
+                }
+              },
+              {
+                "name": "removeAttrs",
+                "params": {
+                  "attrs": [
+                    "data-*",
+                    "data.*"
+                  ]
+                }
+              },
+              {
+                "name": "convertStyleToAttrs",
+                "params": {
+                  "keepImportant": true
+                }
+              },
+              {
+                "name": "sortAttrs"
+              }
+            ]
           });
 
           fs.writeFileSync(item.svg, result.data, {encoding: 'utf-8'})

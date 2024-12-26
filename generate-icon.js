@@ -69,7 +69,7 @@ for (let type in iconPacks) {
     types[type].add(dashedIconName)
     return {
       name: dashedIconName,
-      path: baseUrl + name + '.svg'
+      path: baseUrl + name + '.png'
     }
   }).reduce((accumulator, currentValue) => {
     accumulator[currentValue.name] = currentValue.path
