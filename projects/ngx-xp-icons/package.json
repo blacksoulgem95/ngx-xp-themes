@@ -4,7 +4,7 @@
   "author": "Sofia Vicedomini",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blacksoulgem95/ngx-xp-themes",
+    "url": "git+https://github.com/blacksoulgem95/ngx-xp-themes.git",
     "directory": "projects/ngx-xp-icons"
   },
   "peerDependencies": {
