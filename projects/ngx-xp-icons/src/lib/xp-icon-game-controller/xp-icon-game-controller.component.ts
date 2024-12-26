@@ -1,0 +1,19 @@
+
+import {Component, Input} from '@angular/core';
+import {NgOptimizedImage} from '@angular/common';
+
+@Component({
+  selector: 'xpi-xp-game-controller',
+  standalone: true,
+  imports: [
+    NgOptimizedImage
+  ],
+  templateUrl: './xp-icon-game-controller.component.html',
+  styleUrl: './xp-icon-game-controller.component.css'
+})
+export class XpIconGameControllerComponent {
+  @Input() width: string = 'auto'
+  @Input() height: string = 'auto'
+  @Input() classStyle: string = ''
+
+}
