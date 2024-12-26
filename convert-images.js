@@ -109,6 +109,7 @@ from(items).pipe(
               'removeUnusedNS',
               'removeUselessDefs',
               'reusePaths',
+              'removeXMLNS',
               { name: 'removeViewBox', active: false }, // Mantieni il viewBox
             ],
           });
