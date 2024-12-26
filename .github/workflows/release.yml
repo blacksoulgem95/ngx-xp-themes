@@ -32,6 +32,7 @@ jobs:
           NODE_OPTIONS: "--max_old_space_size=8192"
 
       - run: sed -i '/^dist$/d' .gitignore
+      - run: git -c user.name="GitHub Actions" -c user.email="github-action-${{ github.run_id }}@noreply.com"
       - run: git checkout -b release-${{ github.event.inputs.version }}
       - run: git add . && git commit -m "Release ${{ github.event.inputs.version }}"
       - run: git push --set-upstream origin release-${{ github.event.inputs.version }}
