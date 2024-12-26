@@ -96,12 +96,19 @@ from(items).pipe(
             plugins: [
               'removeDoctype',
               'removeComments',
-              'cleanupIDs',
+              'cleanupIds',
+              'cleanupAttrs',
               'removeMetadata',
               'convertPathData',
               'mergePaths',
+              'cleanupListOfValues',
               'removeUselessStrokeAndFill',
+              'cleanupNumericValues',
               'convertColors',
+              'removeOffCanvasPaths',
+              'removeUnusedNS',
+              'removeUselessDefs',
+              'reusePaths',
               { name: 'removeViewBox', active: false }, // Mantieni il viewBox
             ],
           });
