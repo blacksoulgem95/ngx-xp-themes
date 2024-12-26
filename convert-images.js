@@ -36,6 +36,7 @@ from(items).pipe(
         // skipping already generated svgs
         printProgress(i++, items.length * 2)
         resolve(item.svg)
+        return
       }
 
       exec(`inkscape -p "${item.png}" -o "${item.svg}"`, (error, stdout, stderr) => {
