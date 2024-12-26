@@ -10,7 +10,7 @@ on:
       redraw:
         description: 'SVG Generation Method (Delete & Redraw or Update non-existing)'
         required: true
-        default: 'false'
+        default: 'convert-svg'
         options:
           - 'redraw-svg'
           - 'convert-svg'
