@@ -23,6 +23,8 @@ import {
   template: `<img
     [alt]="pack + '_' + name"
     [ngSrc]="src"
+    [ngClass]="ngClass"
+    style="display: inline-block"
     [height]="size"
     [width]="size"/>`
 })
@@ -31,6 +33,8 @@ export class IconComponent {
    * The size of the icon. Accepts valid CSS values
    */
   @Input() size = '100%';
+
+  @Input() ngClass
 
   /**
    * The name of the icon pack
