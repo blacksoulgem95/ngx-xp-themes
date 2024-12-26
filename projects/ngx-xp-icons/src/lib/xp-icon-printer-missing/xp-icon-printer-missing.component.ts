@@ -1,12 +1,12 @@
 
 import {Component, Input} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'xpi-xp-printer-missing',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgClass
   ],
   templateUrl: './xp-icon-printer-missing.component.html',
   styleUrl: './xp-icon-printer-missing.component.css'

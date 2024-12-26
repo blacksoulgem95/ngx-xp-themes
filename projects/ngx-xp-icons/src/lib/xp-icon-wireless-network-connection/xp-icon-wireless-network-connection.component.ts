@@ -1,12 +1,12 @@
 
 import {Component, Input} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'xpi-xp-wireless-network-connection',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgClass
   ],
   templateUrl: './xp-icon-wireless-network-connection.component.html',
   styleUrl: './xp-icon-wireless-network-connection.component.css'

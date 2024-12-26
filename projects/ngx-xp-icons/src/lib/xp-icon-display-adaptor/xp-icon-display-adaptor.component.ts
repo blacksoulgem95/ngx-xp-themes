@@ -1,12 +1,12 @@
 
 import {Component, Input} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'xpi-xp-display-adaptor',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgClass
   ],
   templateUrl: './xp-icon-display-adaptor.component.html',
   styleUrl: './xp-icon-display-adaptor.component.css'

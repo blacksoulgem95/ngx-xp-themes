@@ -1,12 +1,12 @@
 
 import {Component, Input} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'xpi-xp-take-picture',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgClass
   ],
   templateUrl: './xp-icon-take-picture.component.html',
   styleUrl: './xp-icon-take-picture.component.css'

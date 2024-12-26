@@ -1,12 +1,12 @@
 
 import {Component, Input} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'xpi-xpsp2-internet-connection-firewall-locked-down',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgClass
   ],
   templateUrl: './xpsp2-icon-internet-connection-firewall-locked-down.component.html',
   styleUrl: './xpsp2-icon-internet-connection-firewall-locked-down.component.css'
