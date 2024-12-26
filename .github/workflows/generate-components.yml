@@ -6,7 +6,6 @@ name: Generate Components
 on:
   workflow_run:
     workflows: ["Inkscape"]
-    branches: *
     types:
       - completed
   workflow_dispatch:
