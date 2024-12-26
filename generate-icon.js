@@ -13,13 +13,13 @@ const iconPacks = extractor.iconPacks
 
 const xpIconComponentTS_Template = `
 import {Component, Input} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'xpi-{{type}}-{{icon}}',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgClass
   ],
   templateUrl: './{{type}}-icon-{{icon}}.component.html',
   styleUrl: './{{type}}-icon-{{icon}}.component.css'

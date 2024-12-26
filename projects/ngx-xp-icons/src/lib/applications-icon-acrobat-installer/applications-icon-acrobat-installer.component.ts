@@ -1,12 +1,11 @@
-
 import {Component, Input} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'xpi-applications-acrobat-installer',
   standalone: true,
   imports: [
-    NgOptimizedImage
+    NgClass
   ],
   templateUrl: './applications-icon-acrobat-installer.component.html',
   styleUrl: './applications-icon-acrobat-installer.component.css'
