@@ -21,22 +21,34 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
-      - name: Build artifact
+      - name: Dependencies
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - run: npm run build --if-present
+
+      - run: sed -i '/^\/dist$/d' .gitignore
+
+      - name: Building artefact
+        run: npm run build --if-present
         env:
           NODE_OPTIONS: "--max_old_space_size=8192"
 
-      - run: git checkout -b release-${{ github.event.inputs.version }}
-      - run: sed -i '/^\/dist$/d' .gitignore
-      - run: git config set user.name "GitHub Actions" && git config set user.email "github-action-${{ github.run_id }}@noreply.com"
-      - run: git add . && git commit -m "Release ${{ github.event.inputs.version }}"
-      - run: git push --set-upstream origin release-${{ github.event.inputs.version }}
-      - run: git tag v${{ github.event.inputs.version }} && git push origin v${{ github.event.inputs.version }}
+      - name: Commit & Push
+        uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+          # The name of the user that will be displayed as the author of the commit.
+          # Default: depends on the default_author input
+          author_name: GitHub Actions
+
+          # The email of the user that will be displayed as the author of the commit.
+          # Default: depends on the default_author input
+          author_email: github-action-${{ github.run_id }}@noreply.com
+          message: Release ${{ github.event.inputs.version }}
+          new_branch: release-${{ github.event.inputs.version }}
+          push: true
+          tag: v${{ github.event.inputs.version }}
 
       - name: Create Release
         id: create_release
