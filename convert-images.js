@@ -6,6 +6,8 @@ const printProgress = require('./progress')
 const {optimize} = require('svgo')
 const {from, map, bufferCount, forkJoin, concatMap} = require('rxjs')
 
+const {DOMParser} = require('xmldom')
+
 const assets = './projects/ngx-xp-icons/assets'
 const items = []
 
