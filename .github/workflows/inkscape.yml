@@ -6,6 +6,14 @@ name: Inkscape
 on:
   pull_request:
   workflow_dispatch:
+    inputs:
+      redraw:
+        description: 'SVG Generation Method (Delete & Redraw or Update non-existing)'
+        required: true
+        default: 'false'
+        options:
+          - 'redraw-svg'
+          - 'convert-svg'
 
 jobs:
   generate_svg:
@@ -32,7 +40,7 @@ jobs:
       - run: npm ci
 
       # https://gitlab:com/inkscape/inkscape/-/issues/4716:
-      - run: SELF_CALL=BLAHAJ npm run convert-svg
+      - run: SELF_CALL=BLAHAJ npm run ${{  }}
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:

@@ -12,6 +12,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "redraw-svg": "npx rimraf projects/ngx-xp-icons/assets/**/*.svg && npm run convert-svg",
     "convert-svg": "node convert-images.js",
     "generate-icons": "node generate-icon.js"
   },
@@ -31,9 +32,11 @@
     "png.js": "^0.2.1",
     "pngjs": "^7.0.0",
     "rxjs": "~7.8.0",
+    "svgo": "^3.3.2",
     "tslib": "^2.3.0",
     "uppercamelcase": "^3.0.0",
     "xml2js": "^0.6.2",
+    "xmldom": "^0.6.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {

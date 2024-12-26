@@ -3,10 +3,45 @@ const fs = require('fs')
 const path = require('path')
 const {exec} = require("child_process")
 const printProgress = require('./progress')
+const {optimize} = require('svgo')
 const {from, map, bufferCount, forkJoin, concatMap} = require('rxjs')
 
 const assets = './projects/ngx-xp-icons/assets'
 const items = []
+
+function cleanSvg(svgContent) {
+  const doc = new DOMParser().parseFromString(svgContent, 'image/svg+xml');
+
+  // Rimuovi namespace specifici
+  const namespacesToRemove = ['sodipodi', 'inkscape'];
+  namespacesToRemove.forEach((ns) => {
+    const elements = doc.getElementsByTagNameNS('*', '*');
+    for (let i = 0; i < elements.length; i++) {
+      const attrsToRemove = [];
+      for (let j = 0; j < elements[i].attributes.length; j++) {
+        const attr = elements[i].attributes[j];
+        if (attr.name.startsWith(`${ns}:`) || attr.name === `xmlns:${ns}`) {
+          attrsToRemove.push(attr.name);
+        }
+      }
+      attrsToRemove.forEach((attr) => elements[i].removeAttribute(attr));
+    }
+  });
+
+  // Rimuovi attributi globali non necessari
+  const attributesToRemove = ['id', 'data-name', 'class'];
+  const allElements = doc.getElementsByTagName('*');
+  for (let i = 0; i < allElements.length; i++) {
+    attributesToRemove.forEach((attr) => {
+      if (allElements[i].hasAttribute(attr)) {
+        allElements[i].removeAttribute(attr);
+      }
+    });
+  }
+
+  return new XMLSerializer().serializeToString(doc);
+}
+
 
 for (let pack of Object.keys(iconPacks)) {
   const folder = path.join(assets, pack)
@@ -43,14 +78,37 @@ from(items).pipe(
         process.stderr.write(stderr)
         process.stdout.write(stdout)
 
-        printProgress(i++, items.length * 2)
 
         if (error) {
           console.error(error)
+          printProgress(i++, items.length * 2)
           reject(error)
           process.exit(1)
+        } else {
+
+          const data = fs.readFileSync(item.svg, {encoding: 'utf-8'})
+
+          // Ottimizza il contenuto SVG
+          const result = optimize(cleanSvg(data), {
+            multipass: true, // Esegui più passaggi di ottimizzazione
+            plugins: [
+              'removeDoctype',
+              'removeComments',
+              'cleanupIDs',
+              'removeMetadata',
+              'convertPathData',
+              'mergePaths',
+              'removeUselessStrokeAndFill',
+              'convertColors',
+              { name: 'removeViewBox', active: false }, // Mantieni il viewBox
+            ],
+          });
+
+          fs.writeFileSync(item.svg, result.data, {encoding: 'utf-8'})
+
+          printProgress(i++, items.length * 2)
+          resolve(stdout)
         }
-        resolve(stdout)
       })
     })
   }),
