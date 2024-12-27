@@ -2,7 +2,25 @@
   <h1>NGX XP Icons</h1>
   <p>An Angular Library for Vintage Icons</p>
 
-  <div class="w-100">
+  <div class="container paper">
+    <h3>Installation</h3>
+    <ol>
+      <li>Install the package: <code>npm i --save ngx-xp-icons</code></li>
+      <li>Add XP Icons assets to your angular.json
+      <pre><code>
+"assets": [
+  ...,
+  {{ '{' }}
+    "glob": "**/*.png",
+    "input": "node_modules/ngx-xp-icons"
+  {{ '}' }}
+],
+      </code></pre>
+      </li>
+    </ol>
+  </div>
+
+  <div class="margin-top-large container padding-top-large">
     <div class="form-group w-100">
       <label for="search">Filter</label>
       <input id="search" class="w-100" type="text" placeholder="search" [(ngModel)]="searchValue">
