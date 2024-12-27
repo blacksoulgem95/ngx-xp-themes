@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, InjectionToken, Optional} from '@angular/core';
 import {
   IconPack,
   IconPackApplications,
@@ -11,12 +11,14 @@ import {
   IconPackXpSP2
 } from './asset.library';
 
+export const ICON_BASE_PATH_FOR_ASSETS = new InjectionToken<string>('xpiBasePathForAssets')
+
 @Injectable({
   providedIn: 'root',
 })
 export class AssetService {
 
-  constructor() {
+  constructor(@Optional @Inject(ICON_BASE_PATH_FOR_ASSETS) private basePath: string) {
   }
 
   getAssetUrl(pack: IconPack, name: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications | IconPackOffice2003 | IconPackOffice2007): string {
@@ -30,6 +32,10 @@ export class AssetService {
       throw new Error(`Icon ${name} of pack ${pack} - file not found`)
     }
 
-    return files[name] as string
+    let path = files[name] as string
+
+    if (this.basePath) path = this.basePath + path
+
+    return path
   }
 }

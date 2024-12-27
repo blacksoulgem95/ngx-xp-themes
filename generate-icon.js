@@ -6,7 +6,7 @@ const upperCamelCase = require("uppercamelcase");
 const {writeFileSync} = require("fs")
 
 const libraryFile = "./projects/ngx-xp-icons/src/lib/asset.library.ts"
-const assetBaseUrl = '../../assets/'
+const assetBaseUrl = '/assets/'
 
 class TypeGenerator {
   constructor(name) {

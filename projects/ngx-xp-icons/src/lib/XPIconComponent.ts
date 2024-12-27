@@ -1,5 +1,5 @@
 import {NgClass, NgOptimizedImage} from '@angular/common';
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, InjectionToken, Input, Optional} from '@angular/core';
 
 import {AssetService} from './asset.service';
 import {
@@ -12,6 +12,7 @@ import {
   IconPackXp,
   IconPackXpSP2
 } from './asset.library';
+
 
 /**
  * The icon component
