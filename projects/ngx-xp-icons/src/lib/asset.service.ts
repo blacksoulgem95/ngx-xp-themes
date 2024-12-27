@@ -18,7 +18,7 @@ export const ICON_BASE_PATH_FOR_ASSETS = new InjectionToken<string>('xpiBasePath
 })
 export class AssetService {
 
-  constructor(@Optional @Inject(ICON_BASE_PATH_FOR_ASSETS) private basePath: string) {
+  constructor(@Optional() @Inject(ICON_BASE_PATH_FOR_ASSETS) private basePath: string) {
   }
 
   getAssetUrl(pack: IconPack, name: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications | IconPackOffice2003 | IconPackOffice2007): string {
