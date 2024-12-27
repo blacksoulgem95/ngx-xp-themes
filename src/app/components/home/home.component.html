@@ -1,4 +1,23 @@
 <div class="container paper">
   <h1>NGX XP Icons</h1>
   <p>An Angular Library for Vintage Icons</p>
+
+  <div class="w-100">
+    <div class="form-group w-100">
+      <label for="search">Filter</label>
+      <input id="search" class="w-100" type="text" placeholder="search" [(ngModel)]="searchValue">
+    </div>
+  </div>
+
+  <div *ngFor="let pack of packs" [hidden]="getNamesForPack(pack).length < 1" class="container paper">
+    <h3>Pack: {{pack}}</h3>
+    <div class="row">
+      <div *ngFor="let icon of getNamesForPack(pack)" class="col sm-12 md-6 lg-2">
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column">
+          <xpi-icon [pack]="pack" [name]="icon" size="42"></xpi-icon>
+          <span>{{icon}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

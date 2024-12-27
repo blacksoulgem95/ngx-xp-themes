@@ -29,6 +29,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*.png",
+                "input": "node_modules/ngx-xp-icons"
               }
             ],
             "styles": [

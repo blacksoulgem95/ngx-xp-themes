@@ -4,7 +4,14 @@
 html, body {
   background-color: #e5e5f7;
   opacity: 0.8;
-  background-image:  linear-gradient(#808080 2px, transparent 2px), linear-gradient(90deg, #808080 2px, transparent 2px), linear-gradient(#808080 1px, transparent 1px), linear-gradient(90deg, #808080 1px, #e5e5f7 1px);
-  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
-  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+  background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #e5e5f7 10px ), repeating-linear-gradient( #80808055, #808080 );
+}
+
+xpi-icon img {
+  border: unset;
+  border-radius: unset;
+}
+
+.w-100 {
+  width: 100%;
 }
