@@ -1,0 +1,10 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/papercss/dist/paper.css";
+
+html, body {
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  background-image:  linear-gradient(#808080 2px, transparent 2px), linear-gradient(90deg, #808080 2px, transparent 2px), linear-gradient(#808080 1px, transparent 1px), linear-gradient(90deg, #808080 1px, #e5e5f7 1px);
+  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+  background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+}
