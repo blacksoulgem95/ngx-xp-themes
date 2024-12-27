@@ -4,6 +4,7 @@ const {
 } = require('./extract-icon-names')
 const upperCamelCase = require("uppercamelcase");
 const {writeFileSync} = require("fs")
+const progress = require("./progress")
 
 const libraryFile = "./projects/ngx-xp-icons/src/lib/asset.library.ts"
 const assetBaseUrl = '/assets/'
@@ -47,6 +48,9 @@ const megaType = new TypeGenerator('IconNames')
 let typeAssociation = `{
 `
 
+let total = 0;
+let current = 0;
+
 for (let type in iconPacks) {
 
   const iconPack = iconPacks[type]
@@ -60,17 +64,16 @@ for (let type in iconPacks) {
   const names = extract(iconPack.type)
   const baseUrl = assetBaseUrl + iconPack.type + '/'
 
-  const object = names.map(name => {
-    let upperCamelCaseIconName = upperCamelCase(name)
-    let dashedIconName = upperCamelCaseIconName.replace(/[A-Z]/g, m => "-" + m.toLowerCase())
-    if (dashedIconName.startsWith('-')) {
-      dashedIconName = dashedIconName.slice(1, dashedIconName.length)
-    }
+  total += names.length;
 
-    types[type].add(dashedIconName)
-    megaType.add(dashedIconName)
+  const object = names.map(name => {
+
+    types[type].add(name)
+    megaType.add(name)
+
+    progress(current++, total)
     return {
-      name: dashedIconName,
+      name: name,
       path: baseUrl + name + '.png'
     }
   }).reduce((accumulator, currentValue) => {

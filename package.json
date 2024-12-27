@@ -13,7 +13,7 @@
     "build-win": "node --max-old-space-size=8196 node_modules/@angular/cli/bin/ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "sanitise-files": "cd projects/ngx-xp-icons/assets && ./sanitise.sh && cd ../../..",
+    "sanitise-files": "cd projects/ngx-xp-icons/assets && node sanitise.js && cd ../../..",
     "generate-icons": "npm run sanitise-files && node generate-icon.js",
     "generate-icons-only": "node generate-icon.js"
   },

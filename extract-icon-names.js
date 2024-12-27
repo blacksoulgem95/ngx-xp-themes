@@ -14,7 +14,7 @@ function listFilesWithoutExtension(folderPath) {
     // Filter out directories and remove file extensions
     files = files
       .filter(file => fs.statSync(path.join(folderPath, file)).isFile())
-      .map(file => path.parse(file).name);
+      .map(file => path.parse(file).name).map(name => name.toLowerCase());
 
     return files.filter(function (elem, pos) {
       return files.indexOf(elem) === pos;
