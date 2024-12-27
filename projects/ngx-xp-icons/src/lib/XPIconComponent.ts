@@ -22,7 +22,7 @@ import {IconNames, IconPack} from './asset.library';
     [height]="size"
     [width]="size"/>`
 })
-export class IconComponent {
+export class XPIconComponent {
   /**
    * The size of the icon. Accepts valid CSS values
    */
