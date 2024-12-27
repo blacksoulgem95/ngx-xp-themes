@@ -13,9 +13,9 @@
     "build-win": "node --max-old-space-size=8196 node_modules/@angular/cli/bin/ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "redraw-svg": "npx rimraf projects/ngx-xp-icons/assets/**/*.svg && npm run convert-svg",
-    "convert-svg": "node convert-images.js",
-    "generate-icons": "node generate-icon.js"
+    "sanitise-files": "cd projects/ngx-xp-icons/assets && ./sanitise.sh && cd ../../..",
+    "generate-icons": "npm run sanitise-files && node generate-icon.js",
+    "generate-icons-only": "node generate-icon.js"
   },
   "private": true,
   "dependencies": {

@@ -4,14 +4,15 @@ export {
 
   // validators
   isTypeIconPack,
+  isTypeIconNames,
   isTypeIconPackXp,
+  isTypeIconPackW95,
   isTypeIconPackXpSP2,
   isTypeIconPackWhistler,
   isTypeIconPackLonghorn,
   isTypeIconPackOffice2003,
   isTypeIconPackOffice2007,
   isTypeIconPackApplications,
-
   // full metadata
   iconPacks
 } from './lib/asset.library'
@@ -19,7 +20,9 @@ export {
 export type {
   // types
   IconPack,
+  IconNames,
   IconPackXp,
+  IconPackW95,
   IconPackXpSP2,
   IconPackLonghorn,
   IconPackWhistler,

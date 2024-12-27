@@ -1,17 +1,8 @@
 import {NgClass, NgOptimizedImage} from '@angular/common';
-import {ChangeDetectionStrategy, Component, Inject, InjectionToken, Input, Optional} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 import {AssetService} from './asset.service';
-import {
-  IconPack,
-  IconPackApplications,
-  IconPackLonghorn,
-  IconPackOffice2003,
-  IconPackOffice2007,
-  IconPackWhistler,
-  IconPackXp,
-  IconPackXpSP2
-} from './asset.library';
+import {IconNames, IconPack} from './asset.library';
 
 
 /**
@@ -46,7 +37,7 @@ export class IconComponent {
   /**
    * The name of the icon to render
    */
-  @Input() name!: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications | IconPackOffice2003 | IconPackOffice2007;
+  @Input() name!: IconNames;
 
   constructor(private assetService: AssetService) {
   }

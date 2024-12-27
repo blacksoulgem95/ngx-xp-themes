@@ -42,6 +42,7 @@ let libraryContent = `
 
 const iconPackGenerator = new TypeGenerator('IconPack')
 const types = {}
+const megaType = new TypeGenerator('IconNames')
 
 let typeAssociation = `{
 `
@@ -67,6 +68,7 @@ for (let type in iconPacks) {
     }
 
     types[type].add(dashedIconName)
+    megaType.add(dashedIconName)
     return {
       name: dashedIconName,
       path: baseUrl + name + '.png'
@@ -82,6 +84,7 @@ for (let type in iconPacks) {
 typeAssociation += '\n}'
 
 libraryContent += `${iconPackGenerator.build()}\n\n`
+libraryContent += `${megaType.build()}\n\n`
 
 Object.keys(types).map(key => types[key].build()).forEach(type => {
   libraryContent += `${type}\n\n`

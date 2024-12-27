@@ -26,6 +26,7 @@ function listFilesWithoutExtension(folderPath) {
 }
 
 const iconPacks = {
+  'w95': {type: 'w95', upperType: 'W95'},
   'xp': {type: 'xp', upperType: 'Xp'},
   'xpsp2': {type: 'xpsp2', upperType: 'XpSP2'},
   'longhorn': {type: 'longhorn', upperType: 'Longhorn'},
