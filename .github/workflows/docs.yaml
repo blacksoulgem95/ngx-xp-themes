@@ -35,7 +35,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ github.event.inputs.branch || 'docs' }}
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.1.0
       - name: Dependencies and Doc Build
