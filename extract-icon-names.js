@@ -31,6 +31,8 @@ const iconPacks = {
   'longhorn': {type: 'longhorn', upperType: 'Longhorn'},
   'whistler': {type: 'whistler', upperType: 'Whistler'},
   'applications': {type: 'applications', upperType: 'Applications'},
+  'office2003': {type: 'office2003', upperType: 'Office2003'},
+  'office2007': {type: 'office2007', upperType: 'Office2007'},
 }
 
 const extract = (type) => {

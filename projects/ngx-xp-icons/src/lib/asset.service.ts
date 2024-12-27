@@ -2,7 +2,10 @@ import {Injectable} from '@angular/core';
 import {
   IconPack,
   IconPackApplications,
-  IconPackLonghorn, iconPacks,
+  IconPackLonghorn,
+  IconPackOffice2003,
+  IconPackOffice2007,
+  iconPacks,
   IconPackWhistler,
   IconPackXp,
   IconPackXpSP2
@@ -16,7 +19,7 @@ export class AssetService {
   constructor() {
   }
 
-  getAssetUrl(pack: IconPack, name: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications): string {
+  getAssetUrl(pack: IconPack, name: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications | IconPackOffice2003 | IconPackOffice2007): string {
     const iconPack = iconPacks[pack]
     if (!iconPack.validator(name)) {
       throw new Error(`Icon ${name} not of pack ${pack}`)

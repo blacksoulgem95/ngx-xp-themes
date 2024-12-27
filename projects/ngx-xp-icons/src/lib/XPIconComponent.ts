@@ -6,6 +6,8 @@ import {
   IconPack,
   IconPackApplications,
   IconPackLonghorn,
+  IconPackOffice2003,
+  IconPackOffice2007,
   IconPackWhistler,
   IconPackXp,
   IconPackXpSP2
@@ -43,7 +45,7 @@ export class IconComponent {
   /**
    * The name of the icon to render
    */
-  @Input() name!: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications;
+  @Input() name!: IconPackXp | IconPackXpSP2 | IconPackLonghorn | IconPackWhistler | IconPackApplications | IconPackOffice2003 | IconPackOffice2007;
 
   constructor(private assetService: AssetService) {
   }
